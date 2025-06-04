@@ -1,0 +1,3 @@
+**bold**  -  **two asterisks**
+*italic*  -  *one asterisk*
+`code`    -  `backticks`
