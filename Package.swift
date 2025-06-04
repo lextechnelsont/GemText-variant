@@ -16,9 +16,11 @@ let package = Package(
         .iOSApplication(
             name: "GemText Approach 2",
             targets: ["AppModule"],
+            bundleIdentifier: "com.uxuios.gemtext-testingonly",
+            teamIdentifier: "2HC7W7J69T",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .pencil),
+            appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.yellow),
             supportedDeviceFamilies: [
                 .pad,
@@ -29,7 +31,8 @@ let package = Package(
                 .landscapeRight,
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
-            ]
+            ],
+            appCategory: .productivity
         )
     ],
     targets: [
