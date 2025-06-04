@@ -33,6 +33,8 @@ struct ContentView: View {
     }
 
     private func loadText(from url: URL) {
+        guard url.startAccessingSecurityScopedResource() else { return }
+        defer { url.stopAccessingSecurityScopedResource() }
         if let data = try? Data(contentsOf: url),
            let str = String(data: data, encoding: .utf8) {
             text = str
@@ -41,6 +43,8 @@ struct ContentView: View {
 
     private func saveText() {
         guard let url = selectedURL else { return }
+        guard url.startAccessingSecurityScopedResource() else { return }
+        defer { url.stopAccessingSecurityScopedResource() }
         try? text.write(to: url, atomically: true, encoding: .utf8)
     }
 }
