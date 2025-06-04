@@ -12,13 +12,16 @@ struct ContentView: View {
                 Button("Open File") {
                     showPicker = true
                 }
-                Spacer()
-                Toggle("Edit", isOn: $isEditing)
-                    .disabled(selectedURL == nil)
+                HStack {
+                    Toggle("", isOn: $isEditing)
+                        .disabled(selectedURL == nil)
+                }
+                /*                
                 Button("Save") {
                     saveText()
                 }
                 .disabled(selectedURL == nil)
+                */
             }
             .padding()
 
@@ -28,7 +31,8 @@ struct ContentView: View {
                     .padding()
             } else {
                 ScrollView {
-                    if let attributed = try? AttributedString(markdown: text) {
+                    // From Marco Eidinger blog
+                    if let attributed = try? AttributedString(markdown: text, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
                         Text(attributed)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
