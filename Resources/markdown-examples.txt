@@ -1,3 +1,122 @@
-**bold**  -  **two asterisks**
-*italic*  -  *one asterisk*
-`code`    -  `backticks`
+# Markdown Support in SwiftUI
+
+SwiftUI provides native support for rendering Markdown within `Text` views, making it easier to style text in declarative syntax. Below is a comprehensive list of the Markdown commands supported in SwiftUI as of iOS 15 and later.
+
+---
+
+## 1. **Text Styles**
+
+### Bold
+```swift
+Text("**Bold Text**")
+```
+
+### Italic
+```swift
+Text("*Italic Text*")
+```
+
+### Bold + Italic
+```swift
+Text("***Bold and Italic Text***")
+```
+
+### Strikethrough *(iOS 16+)*
+```swift
+Text("~~Strikethrough Text~~")
+```
+
+---
+
+## 2. **Headings**
+
+### Heading 1
+```swift
+Text("# Heading 1")
+```
+
+### Heading 2
+```swift
+Text("## Heading 2")
+```
+
+### Heading 3
+```swift
+Text("### Heading 3")
+```
+
+---
+
+## 3. **Lists**
+
+### Unordered List
+```swift
+Text("- Item 1\n- Item 2\n- Item 3")
+```
+
+### Ordered List
+```swift
+Text("1. First\n2. Second\n3. Third")
+```
+
+---
+
+## 4. **Links**
+```swift
+Text("[Apple](https://www.apple.com)")
+```
+
+---
+
+## 5. **Inline Code**
+```swift
+Text("This is `inline code`")
+```
+
+---
+
+## 6. **Blockquotes**
+```swift
+Text("> This is a blockquote")
+```
+
+---
+
+## 7. **Line Breaks**
+Use two spaces at the end of a line to force a line break:
+```swift
+Text("First line  \nSecond line")
+```
+
+---
+
+## 8. **Escaping Characters**
+Use backslashes to escape Markdown characters:
+```swift
+Text("\*This is not italic\*")
+```
+
+---
+
+## 9. **Limitations**
+- Nested styles (e.g., bold inside italic) can behave inconsistently.
+- Advanced features like tables, footnotes, and custom HTML are not supported.
+- Custom font styling via Markdown (e.g., font size or color) is not available; use modifiers instead (e.g., `.font(.title)`, `.foregroundColor(.red)`).
+
+---
+
+## 10. **Platform Availability**
+- Markdown support in `Text` was introduced in **iOS 15**, **macOS 12**, **watchOS 8**, and **tvOS 15**.
+
+---
+
+## Example
+```swift
+Text("""
+# Welcome
+This is **bold**, this is *italic*, and this is a [link](https://example.com).
+
+- Item A
+- Item B
+""")
+```
