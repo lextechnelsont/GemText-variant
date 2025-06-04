@@ -117,7 +117,7 @@ struct ContentView: View {
         let fm = FileManager.default
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm"
-        let fileName = "GemText \(dateFormatter.string(from: Date()))\.md"
+        let fileName = "GemText \(dateFormatter.string(from: Date())).md"
 
         var directory: URL
         if let icloudURL = fm.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents/GemText", isDirectory: true) {
