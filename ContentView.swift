@@ -10,7 +10,7 @@ struct ContentView: View {
 
     init() {
         if let url = Bundle.main.url(forResource: "markdown-examples", withExtension: "txt"),
-           let contents = try? String(contentsOf: url) {
+           let contents = try? String(contentsOf: url, encoding: .utf8) {
             self.helpText = contents
         } else {
             self.helpText = ""
@@ -87,7 +87,7 @@ struct ContentView: View {
                 showPicker = false
             }
         }
-        .onChange(of: isEditing) { editing in
+        .onChange(of: isEditing) { _, editing in
             if editing == false {
                 saveText()
                 if let url = selectedURL {
