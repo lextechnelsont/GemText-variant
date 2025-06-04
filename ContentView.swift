@@ -5,6 +5,17 @@ struct ContentView: View {
     @State private var selectedURL: URL?
     @State private var showPicker: Bool = false
     @State private var isEditing: Bool = false
+    @State private var showHelp: Bool = false
+    private let helpText: String
+
+    init() {
+        if let url = Bundle.main.url(forResource: "markdown-examples", withExtension: "txt"),
+           let contents = try? String(contentsOf: url) {
+            self.helpText = contents
+        } else {
+            self.helpText = ""
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -16,7 +27,14 @@ struct ContentView: View {
                     Toggle("", isOn: $isEditing)
                         .disabled(selectedURL == nil)
                 }
-                /*                
+                if isEditing {
+                    Button("Help") {
+                        withAnimation {
+                            showHelp.toggle()
+                        }
+                    }
+                }
+                /*
                 Button("Save") {
                     saveText()
                 }
@@ -26,9 +44,25 @@ struct ContentView: View {
             .padding()
 
             if isEditing {
-                TextEditor(text: $text)
-                    .border(Color.gray)
-                    .padding()
+                GeometryReader { geo in
+                    HStack(spacing: 0) {
+                        TextEditor(text: $text)
+                            .frame(width: showHelp ? geo.size.width * 2/3 : geo.size.width)
+                            .border(Color.gray)
+                        if showHelp {
+                            ScrollView {
+                                Text(helpText)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding()
+                            }
+                            .frame(width: geo.size.width * 1/3)
+                            .border(Color.gray)
+                            .transition(.move(edge: .trailing))
+                        }
+                    }
+                    .animation(.default, value: showHelp)
+                }
+                .padding()
             } else {
                 ScrollView {
                     // From Marco Eidinger blog
