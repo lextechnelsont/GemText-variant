@@ -4,6 +4,7 @@ struct ContentView: View {
     @State private var text: String = ""
     @State private var selectedURL: URL?
     @State private var showPicker: Bool = false
+    @State private var showCreationError: Bool = false
     @State private var isEditing: Bool = false
     @State private var showHelp: Bool = false
     private let helpText: String
@@ -22,6 +23,9 @@ struct ContentView: View {
             HStack {
                 Button("Open File") {
                     showPicker = true
+                }
+                Button("New File") {
+                    createNewFile()
                 }
                 HStack {
                     Toggle("", isOn: $isEditing)
@@ -87,6 +91,9 @@ struct ContentView: View {
                 showPicker = false
             }
         }
+        .alert("Failed to create file", isPresented: $showCreationError) {
+            Button("OK", role: .cancel) {}
+        }
         .onChange(of: isEditing) { _, editing in
             if editing == false {
                 saveText()
@@ -103,6 +110,36 @@ struct ContentView: View {
         if let data = try? Data(contentsOf: url),
            let str = String(data: data, encoding: .utf8) {
             text = str
+        }
+    }
+
+    private func createNewFile() {
+        let fm = FileManager.default
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm"
+        let fileName = "GemText \(dateFormatter.string(from: Date()))\.md"
+
+        var directory: URL
+        if let icloudURL = fm.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents/GemText", isDirectory: true) {
+            directory = icloudURL
+        } else if let localURL = fm.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("GemText", isDirectory: true) {
+            directory = localURL
+        } else {
+            showCreationError = true
+            return
+        }
+
+        do {
+            try fm.createDirectory(at: directory, withIntermediateDirectories: true)
+            let fileURL = directory.appendingPathComponent(fileName)
+            if !fm.fileExists(atPath: fileURL.path) {
+                fm.createFile(atPath: fileURL.path, contents: Data())
+            }
+            selectedURL = fileURL
+            loadText(from: fileURL)
+            isEditing = true
+        } catch {
+            showCreationError = true
         }
     }
 
