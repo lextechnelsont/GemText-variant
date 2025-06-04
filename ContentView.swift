@@ -4,6 +4,7 @@ struct ContentView: View {
     @State private var text: String = ""
     @State private var selectedURL: URL?
     @State private var showPicker: Bool = false
+    @State private var isEditing: Bool = false
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -12,6 +13,8 @@ struct ContentView: View {
                     showPicker = true
                 }
                 Spacer()
+                Toggle("Edit", isOn: $isEditing)
+                    .disabled(selectedURL == nil)
                 Button("Save") {
                     saveText()
                 }
@@ -19,15 +22,39 @@ struct ContentView: View {
             }
             .padding()
 
-            TextEditor(text: $text)
+            if isEditing {
+                TextEditor(text: $text)
+                    .border(Color.gray)
+                    .padding()
+            } else {
+                ScrollView {
+                    if let attributed = try? AttributedString(markdown: text) {
+                        Text(attributed)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                    } else {
+                        Text(text)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                    }
+                }
                 .border(Color.gray)
                 .padding()
+            }
         }
         .sheet(isPresented: $showPicker) {
             FilePicker { url in
                 selectedURL = url
                 loadText(from: url)
                 showPicker = false
+            }
+        }
+        .onChange(of: isEditing) { editing in
+            if editing == false {
+                saveText()
+                if let url = selectedURL {
+                    loadText(from: url)
+                }
             }
         }
     }
