@@ -24,9 +24,10 @@ struct ContentView: View {
                 Button("Open File") {
                     showPicker = true
                 }
+                /*
                 Button("New File") {
                     createNewFile()
-                }
+                } */
                 HStack {
                     Toggle("", isOn: $isEditing)
                         .disabled(selectedURL == nil)
