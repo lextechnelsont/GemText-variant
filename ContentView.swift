@@ -71,7 +71,8 @@ struct ContentView: View {
             } else {
                 ScrollView {
                     // From Marco Eidinger blog
-                    if let attributed = try? AttributedString(markdown: text, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
+                    /* if let attributed = try? AttributedString(markdown: text, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)) { */
+                    if let attributed = try? AttributedString(styledMarkdown: text) {
                         Text(attributed)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
