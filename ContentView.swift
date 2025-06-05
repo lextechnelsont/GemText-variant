@@ -21,6 +21,7 @@ struct ContentView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
+
                 Button(action: { showPicker = true }) {
                     Image(systemName: "folder.open")
                 }
