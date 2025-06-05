@@ -86,6 +86,13 @@ struct ContentView: View {
                 .padding()
             }
         }
+        .padding()
+        .background(Color.black)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(isEditing ? Color.yellow : Color.clear, lineWidth: 1)
+        )
         .sheet(isPresented: $showPicker) {
             FilePicker { url in
                 selectedURL = url
