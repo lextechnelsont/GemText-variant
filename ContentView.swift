@@ -21,24 +21,11 @@ struct ContentView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Button("Open File") {
-                    showPicker = true
-                }
-                /*
-                Button("New File") {
-                    createNewFile()
-                }
-                */
-                Spacer()
-                if let fileName = selectedURL?.lastPathComponent {
-                    Text(fileName)
-                        .lineLimit(1)
+
+                Button(action: { showPicker = true }) {
+                    Image(systemName: "folder.open")
                 }
                 Spacer()
-                HStack {
-                    Toggle("", isOn: $isEditing)
-                        .disabled(selectedURL == nil)
-                }
                 if isEditing {
                     Button("Help") {
                         withAnimation {
@@ -46,12 +33,11 @@ struct ContentView: View {
                         }
                     }
                 }
-                /*
-                Button("Save") {
-                    saveText()
+                Toggle(isOn: $isEditing) {
+                    Image(systemName: "pencil")
                 }
                 .disabled(selectedURL == nil)
-                */
+                .padding(.leading, 8)
             }
             .padding()
 
@@ -61,6 +47,10 @@ struct ContentView: View {
                         TextEditor(text: $text)
                             .frame(width: showHelp ? geo.size.width * 2/3 : geo.size.width)
                             .border(Color.gray)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.yellow, lineWidth: 1)
+                            )
                         if showHelp {
                             ScrollView {
                                 Text(helpText)
@@ -96,10 +86,6 @@ struct ContentView: View {
         .padding()
         .background(Color.black)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(isEditing ? Color.yellow : Color.clear, lineWidth: 1)
-        )
         .sheet(isPresented: $showPicker) {
             FilePicker { url in
                 selectedURL = url
