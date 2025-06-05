@@ -27,7 +27,14 @@ struct ContentView: View {
                 /*
                 Button("New File") {
                     createNewFile()
-                } */
+                }
+                */
+                Spacer()
+                if let fileName = selectedURL?.lastPathComponent {
+                    Text(fileName)
+                        .lineLimit(1)
+                }
+                Spacer()
                 HStack {
                     Toggle("", isOn: $isEditing)
                         .disabled(selectedURL == nil)
