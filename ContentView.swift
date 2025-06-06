@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var showCreationError: Bool = false
     @State private var isEditing: Bool = false
     @State private var showHelp: Bool = false
+    @Environment(\.scenePhase) private var scenePhase
     private let helpText: String
 
     init() {
@@ -20,10 +21,18 @@ struct ContentView: View {
 
     var body: some View {
         VStack(alignment: .center) {
+            if let url = selectedURL {
+                Text(url.lastPathComponent)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                    .frame(maxWidth: .infinity)
+            }
             HStack {
-                Button(action: { showPicker = true }) {
-                    Image(systemName: "folder")
-                        .tint(.accentColor)
+                if !isEditing {
+                    Button(action: { showPicker = true }) {
+                        Image(systemName: "folder")
+                            .tint(.accentColor)
+                    }
                 }
                 if isEditing {
                     Spacer(minLength: 16)
@@ -117,6 +126,11 @@ struct ContentView: View {
                 if let url = selectedURL {
                     loadText(from: url)
                 }
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active && isEditing {
+                saveText()
             }
         }
     }
