@@ -19,7 +19,7 @@ let package = Package(
             bundleIdentifier: "com.uxuios.gemtext-testingonly",
             teamIdentifier: "2HC7W7J69T",
             displayVersion: "1.0",
-            bundleVersion: "6",
+            bundleVersion: "7",
             appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.yellow),
             supportedDeviceFamilies: [

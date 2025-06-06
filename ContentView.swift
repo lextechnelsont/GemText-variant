@@ -19,25 +19,26 @@ struct ContentView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
             HStack {
-
                 Button(action: { showPicker = true }) {
-                    Image(systemName: "folder.open")
+                    Image(systemName: "folder")
+                        .tint(.accentColor)
                 }
-                Spacer()
                 if isEditing {
+                    Spacer(minLength: 16)
                     Button("Help") {
                         withAnimation {
                             showHelp.toggle()
                         }
                     }
+                    .padding(.trailing)
                 }
                 Toggle(isOn: $isEditing) {
                     Image(systemName: "pencil")
+                          .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 .disabled(selectedURL == nil)
-                .padding(.leading, 8)
             }
             .padding()
 
@@ -45,26 +46,35 @@ struct ContentView: View {
                 GeometryReader { geo in
                     HStack(spacing: 0) {
                         TextEditor(text: $text)
+                            .contentMargins(16)
                             .frame(width: showHelp ? geo.size.width * 2/3 : geo.size.width)
-                            .border(Color.gray)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.yellow, lineWidth: 1)
-                            )
+                            .cornerRadius(12)
                         if showHelp {
                             ScrollView {
                                 Text(helpText)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding()
+                                    .padding(.leading)
+                                    .font(.caption)
+                                    .monospaced()
                             }
                             .frame(width: geo.size.width * 1/3)
-                            .border(Color.gray)
+                            .padding(.trailing)
                             .transition(.move(edge: .trailing))
                         }
                     }
                     .animation(.default, value: showHelp)
                 }
-                .padding()
+            } else if text == "" && isEditing == false {
+                VStack(alignment: .center) {
+                    Spacer()
+                    Text("GemText")       
+                    Button("Open .txt or .md File") {
+                        showPicker = true
+                    }
+                    .foregroundStyle(.black)
+                    .buttonStyle(.borderedProminent)
+                    Spacer()
+                } .frame(width: .infinity, height: .infinity)
             } else {
                 ScrollView {
                     // From Marco Eidinger blog
@@ -79,13 +89,18 @@ struct ContentView: View {
                             .padding()
                     }
                 }
-                .border(Color.gray)
+                /*
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.accentColor, lineWidth: 2)
+                ) */
                 .padding()
+                 
             }
         }
         .padding()
         .background(Color.black)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .sheet(isPresented: $showPicker) {
             FilePicker { url in
                 selectedURL = url
