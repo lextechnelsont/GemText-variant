@@ -21,12 +21,6 @@ struct ContentView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            if let url = selectedURL {
-                Text(url.lastPathComponent)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                    .frame(maxWidth: .infinity)
-            }
             HStack {
                 if !isEditing {
                     Button(action: { showPicker = true }) {
@@ -35,13 +29,16 @@ struct ContentView: View {
                     }
                 }
                 if isEditing {
-                    Spacer(minLength: 16)
-                    Button("Help") {
-                        withAnimation {
-                            showHelp.toggle()
+                    Button(action: { withAnimation { showHelp.toggle() } }) {
+                            Image(systemName: "questionmark.square")
+                                .tint(.accentColor)
                         }
-                    }
-                    .padding(.trailing)
+                }
+                if let url = selectedURL {
+                    Text(url.lastPathComponent)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .frame(maxWidth: .infinity)
                 }
                 Toggle(isOn: $isEditing) {
                     Image(systemName: "pencil")
@@ -76,7 +73,13 @@ struct ContentView: View {
             } else if text == "" && isEditing == false {
                 VStack(alignment: .center) {
                     Spacer()
-                    Text("GemText")       
+                    Image("Image Asset")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 320)
+                    Text("A minimalist markdown and plain text editor")
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom)
                     Button("Open .txt or .md File") {
                         showPicker = true
                     }

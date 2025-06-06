@@ -8,18 +8,18 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "GemText Approach 2",
+    name: "GemText",
     platforms: [
         .iOS("18.1")
     ],
     products: [
         .iOSApplication(
-            name: "GemText Approach 2",
+            name: "GemText",
             targets: ["AppModule"],
             bundleIdentifier: "com.uxuios.gemtext-testingonly",
             teamIdentifier: "2HC7W7J69T",
             displayVersion: "1.0",
-            bundleVersion: "7",
+            bundleVersion: "8",
             appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.yellow),
             supportedDeviceFamilies: [
